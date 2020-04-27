@@ -7,8 +7,10 @@ using Microsoft.Extensions.Logging;
 
 namespace DockerTestApp1.Controllers
 {
+    
+    [ApiVersion("1.0")]
+    [Route("api/v{v:apiVersion}/[controller]")]
     [ApiController]
-    [Route("[controller]")]
     public class UserController : ControllerBase
     {
         private User[] users = new User[]
@@ -22,6 +24,7 @@ namespace DockerTestApp1.Controllers
         // GET: api/Users
         //[ResponseType(typeof(IEnumerable<User>))]
         //[Route("List")]
+        [HttpGet]
         public IActionResult Get()
         {
             return Ok(users);
