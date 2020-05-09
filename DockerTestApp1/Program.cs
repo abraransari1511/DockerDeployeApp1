@@ -20,7 +20,12 @@ namespace DockerTestApp1
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder
+                  ////.UseWebRoot("")
+                  //  .UseKestrel()
+                  //  .UseIIS()
+                  //  .UseIISIntegration()
+                    .UseStartup<Startup>();
                 });
     }
 }

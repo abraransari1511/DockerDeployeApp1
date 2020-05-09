@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DockerTestApp1.Model;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -36,11 +37,16 @@ namespace DockerTestApp1
                 o.ReportApiVersions = true;
                 o.AssumeDefaultVersionWhenUnspecified = true;
             });
+
+            services.Configure<MySettingsConfiguration>(this.Configuration.GetSection("MySettings"));
+
+            //services.AddTransient()
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -50,6 +56,8 @@ namespace DockerTestApp1
 
             app.UseHttpsRedirection();
 
+
+           
             app.UseRouting();
 
             app.UseAuthorization();
