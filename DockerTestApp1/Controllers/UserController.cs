@@ -61,5 +61,13 @@ namespace DockerTestApp1.Controllers
            // return Ok(customVariable);
             return Ok(_configuration.Value);
         }
+
+        [HttpGet("GetCustomEnvironmentValue")]
+        public IActionResult GetCustomEnvironmentValue()
+        {
+
+            var customVariable = Environment.GetEnvironmentVariable("MyCustomVariable");
+            return Ok(customVariable);
+        }
     }
 }
