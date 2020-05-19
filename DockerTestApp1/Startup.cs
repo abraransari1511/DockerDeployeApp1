@@ -17,9 +17,16 @@ namespace DockerTestApp1
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+
+            var builder = new ConfigurationBuilder()
+                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                    .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                    .AddEnvironmentVariables();
+
+            this.Configuration = builder.Build();
         }
 
         public IConfiguration Configuration { get; }
@@ -27,13 +34,16 @@ namespace DockerTestApp1
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+
+
             services.AddControllers();
 
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo() { Title = "Docker App 1", Version = "v1" }));
 
             services.AddApiVersioning(o =>
             {
-                o.DefaultApiVersion = new ApiVersion(1,1);
+                o.DefaultApiVersion = new ApiVersion(1, 1);
                 o.ReportApiVersions = true;
                 o.AssumeDefaultVersionWhenUnspecified = true;
             });
@@ -46,7 +56,7 @@ namespace DockerTestApp1
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory logger)
         {
-            
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -57,7 +67,7 @@ namespace DockerTestApp1
             app.UseHttpsRedirection();
 
 
-           
+
             app.UseRouting();
 
             app.UseAuthorization();
