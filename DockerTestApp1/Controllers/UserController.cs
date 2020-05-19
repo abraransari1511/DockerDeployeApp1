@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DockerTestApp1.Model;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -17,7 +18,7 @@ namespace DockerTestApp1.Controllers
     {
 
         private readonly IOptions<MySettingsConfiguration> _configuration;
-
+        private readonly IWebHostEnvironment _env;
         private User[] users = new User[]
      {
         new User { id = 1, name = "Haleemah Redfern", email = "email1@mail.com", phone = "01111111", role = 1},
@@ -27,9 +28,10 @@ namespace DockerTestApp1.Controllers
         new User { id = 5, name = "Cairon Reynolds", email = "email5@mail.com", phone = "01111111", role = 3}
      };
 
-        public UserController(IOptions<MySettingsConfiguration> configuration)
+        public UserController(IWebHostEnvironment env, IOptions<MySettingsConfiguration> configuratio)
         {
-            _configuration = configuration;
+            _configuration = configuratio;
+            _env = env;
         }
 
         // GET: api/Users
@@ -57,8 +59,8 @@ namespace DockerTestApp1.Controllers
         public IActionResult GetEnvironmentValue()
         {
 
-         //   var customVariable = Environment.GetEnvironmentVariable("MyCustomVariable");
-           // return Ok(customVariable);
+            //   var customVariable = Environment.GetEnvironmentVariable("MyCustomVariable");
+            // return Ok(customVariable);
             return Ok(_configuration.Value);
         }
 
@@ -67,7 +69,7 @@ namespace DockerTestApp1.Controllers
         {
 
             var customVariable = Environment.GetEnvironmentVariable("MyCustomVariable");
-            return Ok(customVariable);
+            return Ok($"MyCustomVariable={customVariable}, ASPNETCORE_ENVIRONMENT={_env.EnvironmentName}");
         }
     }
 }
